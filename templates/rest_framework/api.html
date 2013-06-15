@@ -30,4 +30,15 @@
         </li>
     {% endfor %}
     </ul>
+
+    <form method="post" action="{% url 'web:create' %}">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Add</legend>
+            <label>todo</label>
+            <input type="text" placeholder="Type something..." name="title" required>
+            <span class="help-block">remember the milk</span>
+            <button type="submit" class="btn">add</button>
+        </fieldset>
+    </form>
 {% endblock %}
