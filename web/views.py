@@ -7,7 +7,18 @@ from api.models import Todo
 
 @login_required
 def index(request):
-    todos = Todo.objects.filter(owner=request.user)
+    completed = request.GET.get('completed', default='false')
+
+    if completed.lower() == 'true':
+        completed = True
+    elif completed.lower() == 'false':
+        completed = False
+
+    if completed == 'all':
+        todos = Todo.objects.filter(owner=request.user)
+    else:
+        todos = Todo.objects.filter(owner=request.user, completed=completed)
+    
     return render(request, 'rest_framework/api.html', {
         'todos': todos
     })
