@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
+    'web',
     'south',
 )
 
@@ -162,7 +163,7 @@ LOGGING = {
 
 # Custom settings
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = '/api-auth/login/'
+LOGIN_URL = '/auth/login/'
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
