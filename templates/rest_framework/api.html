@@ -25,7 +25,11 @@
                     <input type="checkbox" id="checkbox{{ todo.id }}" {% if todo.completed %}checked{% endif %}> {{ todo.title }}
                 </label>
                 <input type="hidden" name="next" value="{% url 'web:index' %}">
-                <button class="btn btn-mini btn-success" type="submit">completed</button>
+                <button class="btn btn-mini btn-success" type="submit" id="completedButton{{ todo.id }}">completed</button>
+                <script type="text/javascript">
+                    var completedButton = document.getElementById('completedButton{{ todo.id }}');
+                    completedButton.parentNode.removeChild(completedButton);
+                </script>
             </form>
         </li>
     {% endfor %}
