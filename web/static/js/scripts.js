@@ -51,12 +51,8 @@ function addTodo() {
 
 function removeCompleted() {
     $('.todos li :checked').each(function (index) {
-        var $parent = $(this).parent().parent();
+        var id = $(this).attr('id').replace('checkbox-', '');
 
-        if ($parent.is('li')) {
-            $parent.remove();
-        } else {
-            $parent.parent().remove();
-        }
+        $('#todo-' + id).remove();
     })
 }

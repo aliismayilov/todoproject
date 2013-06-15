@@ -20,7 +20,7 @@
 
     <ul class="unstyled todos">
     {% for todo in todos %}
-        <li>
+        <li id="todo-{{ todo.id }}">
             <form method="post" action="{% url 'todo-completed' todo.id %}">
                 {% csrf_token %}
                 <label class="checkbox">
