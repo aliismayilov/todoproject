@@ -14,7 +14,8 @@ class TodoViewSet(viewsets.ModelViewSet):
     serializer_class = TodoSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwnerOnly)
     
-    filter_backend = filters.OrderingFilter
+    filter_backends = (filters.OrderingFilter, filters.DjangoFilterBackend)
+    filter_fields = ('completed',)
 
     @action()
     def completed(self, request, *args, **kwargs):
