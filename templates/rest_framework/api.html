@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block branding %}
-    <a class='brand' href='/'>Todo management</span></a>
+    <a class='brand' href='{% url 'web:index' %}'>Todo management</span></a>
 {% endblock %}
 
 {% block userlinks %}
@@ -13,4 +13,21 @@
         {% csrf_token %}
         <button class="btn btn-danger" type="submit">Logout</button>
     </form>
+{% endblock %}
+
+{% block content %}
+    <ul class="unstyled">
+    {% for todo in todos %}
+        <li>
+            <form method="post" action="{% url 'todo-completed' todo.id %}">
+                {% csrf_token %}
+                <label class="checkbox">
+                    <input type="checkbox" id="checkbox{{ todo.id }}" {% if todo.completed %}checked{% endif %}> {{ todo.title }}
+                </label>
+                <input type="hidden" name="next" value="{% url 'web:index' %}">
+                <button class="btn btn-mini btn-success" type="submit">completed</button>
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
 {% endblock %}

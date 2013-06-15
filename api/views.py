@@ -1,3 +1,6 @@
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
+
 from rest_framework import permissions, viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -19,7 +22,10 @@ class TodoViewSet(viewsets.ModelViewSet):
         todo.completed = not todo.completed # toggle
         todo.save()
         serializer = TodoSerializer(todo)
-        return Response(serializer.data)
+        if request.POST.get('next'):
+            return redirect(reverse('web:index'))
+        else:
+            return Response(serializer.data)
 
     def pre_save(self, obj):
         obj.owner = self.request.user
