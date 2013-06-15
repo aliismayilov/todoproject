@@ -10,6 +10,10 @@ $(function() {
         addTodo();
         return false;
     });
+
+    $('#archive-button').click(function () {
+        removeCompleted();
+    });
 });
 
 function ajaxCompleted(id) {
@@ -43,4 +47,16 @@ function addTodo() {
             ajaxCompleted(data.id);
         });
     });
+}
+
+function removeCompleted() {
+    $('.todos li :checked').each(function (index) {
+        var $parent = $(this).parent().parent();
+
+        if ($parent.is('li')) {
+            $parent.remove();
+        } else {
+            $parent.parent().remove();
+        }
+    })
 }

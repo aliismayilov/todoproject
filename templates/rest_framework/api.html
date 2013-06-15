@@ -16,6 +16,8 @@
 {% endblock %}
 
 {% block content %}
+    <button type="button" class="btn btn-warning pull-right" id="archive-button">Archive completed <i class="icon-trash icon-white"></i></button>
+
     <ul class="unstyled todos">
     {% for todo in todos %}
         <li>
