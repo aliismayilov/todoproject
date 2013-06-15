@@ -18,7 +18,7 @@ $(function() {
 
 function ajaxCompleted(id) {
     $.post('/api/todos/' + id + '/completed/', function (data) {
-        console.log(data);
+        $('#todo-' + id).toggleClass('striked');
     });
 }
 
