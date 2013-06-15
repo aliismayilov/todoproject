@@ -10,7 +10,7 @@ class Todo(models.Model):
     )
 
     title = models.CharField(max_length=100)
-    priority = models.IntegerField(choices=PRIORITIES)
+    priority = models.IntegerField(choices=PRIORITIES, blank=True)
     completed = models.BooleanField(editable=False)
     owner = models.ForeignKey('auth.User', related_name='todos', editable=False)
 

@@ -127,6 +127,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'api',
     'south',
 )
 
@@ -157,4 +159,14 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+
+
+# Custom settings
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/api-auth/login/'
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
 }
