@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block content %}
-    <ul class="unstyled">
+    <ul class="unstyled todos">
     {% for todo in todos %}
         <li>
             <form method="post" action="{% url 'todo-completed' todo.id %}">
