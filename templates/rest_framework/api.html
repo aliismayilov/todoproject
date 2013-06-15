@@ -22,12 +22,12 @@
             <form method="post" action="{% url 'todo-completed' todo.id %}">
                 {% csrf_token %}
                 <label class="checkbox">
-                    <input type="checkbox" id="checkbox{{ todo.id }}" {% if todo.completed %}checked{% endif %}> {{ todo.title }}
+                    <input type="checkbox" id="checkbox-{{ todo.id }}" {% if todo.completed %}checked{% endif %}> {{ todo.title }}
                 </label>
                 <input type="hidden" name="next" value="{% url 'web:index' %}">
-                <button class="btn btn-mini btn-success" type="submit" id="completedButton{{ todo.id }}">completed</button>
+                <button class="btn btn-mini btn-success" type="submit" id="completed-button-{{ todo.id }}">completed</button>
                 <script type="text/javascript">
-                    var completedButton = document.getElementById('completedButton{{ todo.id }}');
+                    var completedButton = document.getElementById('completed-button-{{ todo.id }}');
                     completedButton.parentNode.removeChild(completedButton);
                 </script>
             </form>
@@ -35,12 +35,12 @@
     {% endfor %}
     </ul>
 
-    <form method="post" action="{% url 'web:create' %}">
+    <form method="post" action="{% url 'web:create' %}" id="add-todo">
         {% csrf_token %}
         <fieldset>
             <legend>Add</legend>
             <label>todo</label>
-            <input type="text" placeholder="Type something..." name="title" required>
+            <input type="text" placeholder="Type something..." name="title" id="todo-title" required>
             <span class="help-block">remember the milk</span>
             <button type="submit" class="btn">add</button>
         </fieldset>
