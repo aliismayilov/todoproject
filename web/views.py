@@ -31,6 +31,13 @@ def create(request):
     if not title:
         return redirect(reverse('web:index'))
 
+    # get priority if supplied
+    if title.strip().endswith('!'):
+        priority = Todo.HIGH
+        title = title.strip()[:-1].strip()
+    else:
+        priority = Todo.LOW
+
     # get date if defined
     if '^' in title:
         date = title.split('^')[1].split()[0]
@@ -45,7 +52,7 @@ def create(request):
         title=title,
         owner=request.user,
         completed=False,
-        priority=Todo.LOW,
+        priority=priority,
         due_date=date
     )
     todo.save()

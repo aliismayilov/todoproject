@@ -40,6 +40,12 @@ var checkbox;
 function addTodo() {
     var todoString = $('#todo-string').val();
     var date = null;
+    var priority = 1; // Todo.LOW
+
+    if (endsWith(todoString.trim(), '!')) {
+        priority = 10; // Todo.HIGH
+        todoString = todoString.trim().substring(0, todoString.trim().length - 1).trim();
+    }
 
     if (todoString.indexOf("^") !== -1) {
         date = todoString.split('^')[1].split(' ')[0];
@@ -48,7 +54,8 @@ function addTodo() {
 
     var todo = {
         title: todoString,
-        due_date: ((date == null) ? null : parseDate(date).toISOString())
+        due_date: ((date == null) ? null : parseDate(date).toISOString()),
+        priority: priority
     };
 
     $.post('/api/todos/', todo, function (data) {
@@ -111,7 +118,7 @@ function addTodo() {
             console.log(data.id);
             ajaxCompleted(data.id);
         });
-    });
+    }).fail(function(data) { console.log(data); });
 }
 
 function removeCompleted() {
@@ -144,4 +151,8 @@ function parseDate(dateString) {
 
 function formatDate(date) {
     return (date.getUTCMonth() + 1) + '/' + date.getUTCDate() + '/' + date.getUTCFullYear();
+}
+
+function endsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }

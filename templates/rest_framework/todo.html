@@ -2,7 +2,7 @@
     <form method="post" action="{% url 'todo-completed' todo.id %}">
         {% csrf_token %}
         <label class="checkbox">
-            <input type="checkbox" id="checkbox-{{ todo.id }}" {% if todo.completed %}checked{% endif %}> {{ todo.title }}
+            <input type="checkbox" id="checkbox-{{ todo.id }}" {% if todo.completed %}checked{% endif %}> {{ todo.title }} {{ todo.priority }}
         </label>
         <input type="hidden" name="next" value="{% url 'web:index' %}">
         <button class="btn btn-mini btn-success" type="submit" id="completed-button-{{ todo.id }}">completed</button>
