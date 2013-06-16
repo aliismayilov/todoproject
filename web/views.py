@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.views.decorators.http import require_http_methods
+from django.utils import timezone
 
 from api.models import Todo
 
@@ -30,11 +31,22 @@ def create(request):
     if not title:
         return redirect(reverse('web:index'))
 
+    # get date if defined
+    if '^' in title:
+        date = title.split('^')[1].split()[0]
+        title = title.split('^')[0].strip()
+
+        # parse date to datetime object
+        date = timezone.datetime.strptime(date, '%m/%d/%Y')
+    else:
+        date = None
+
     todo = Todo(
         title=title,
         owner=request.user,
         completed=False,
-        priority=Todo.LOW
+        priority=Todo.LOW,
+        due_date=date
     )
     todo.save()
 
