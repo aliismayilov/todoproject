@@ -24,7 +24,7 @@
     {% for due_date in todo_list %}
         <li><h3>{{ due_date.grouper|default:"No date" }}</h3>
         <ul class="unstyled">
-            {% for todo in due_date.list %}
+            {% for todo in due_date.list|dictsortreversed:"priority" %}
                 {% include 'rest_framework/todo.html' %}
             {% endfor %}
         </ul>

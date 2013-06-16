@@ -31,7 +31,7 @@ $(function() {
 
 function ajaxCompleted(id) {
     $.post('/api/todos/' + id + '/completed/', function (data) {
-        $('#todo-' + id).toggleClass('striked');
+        $('#todo-' + id).toggleClass('striked muted');
     });
 }
 
@@ -118,6 +118,13 @@ function addTodo() {
             console.log(data.id);
             ajaxCompleted(data.id);
         });
+
+        // add priority class
+        if (data.priority == 10) {
+            $('#todo-' + data.id).addClass('str');
+        } else {
+            $('#todo-' + data.id).addClass('lit');
+        }
     }).fail(function(data) { console.log(data); });
 }
 

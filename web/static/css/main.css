@@ -1,5 +1,6 @@
 .striked {
     text-decoration: line-through;
+    color: #999999;
 }
 
 #content {

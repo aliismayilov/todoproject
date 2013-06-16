@@ -1,8 +1,8 @@
-<li id="todo-{{ todo.id }}" {% if todo.completed %}class="striked"{% endif %}>
+<li id="todo-{{ todo.id }}" class="{% if todo.completed %}striked{% endif %} {% if todo.priority == 10 %}str{% else %}lit{% endif %}">
     <form method="post" action="{% url 'todo-completed' todo.id %}">
         {% csrf_token %}
         <label class="checkbox">
-            <input type="checkbox" id="checkbox-{{ todo.id }}" {% if todo.completed %}checked{% endif %}> {{ todo.title }} {{ todo.priority }}
+            <input type="checkbox" id="checkbox-{{ todo.id }}" {% if todo.completed %}checked{% endif %}> {{ todo.title }}
         </label>
         <input type="hidden" name="next" value="{% url 'web:index' %}">
         <button class="btn btn-mini btn-success" type="submit" id="completed-button-{{ todo.id }}">completed</button>
