@@ -14,6 +14,19 @@ $(function() {
     $('#archive-button').click(function () {
         removeCompleted();
     });
+
+    $('#todo-string').keypress(function(event) {
+        var val = $('#todo-string').val();
+
+        if ( event.which == 94 ) {
+            var datepicker = $('#todo-string').datepicker('show').on('changeDate', function(ev) {
+                var newValue = val + ' ^' + $('#todo-string').val();
+                $('#todo-string').val(newValue);
+
+                datepicker.datepicker('hide');
+            });
+        }
+    });
 });
 
 function ajaxCompleted(id) {
@@ -25,13 +38,22 @@ function ajaxCompleted(id) {
 var checkbox;
 
 function addTodo() {
+    var todoString = $('#todo-string').val();
+    var date = null;
+
+    if (todoString.indexOf("^") !== -1) {
+        date = todoString.split('^')[1].split(' ')[0];
+        todoString = todoString.split('^')[0].trim();
+    }
+
     var todo = {
-        title: $('#todo-title').val()
+        title: todoString,
+        due_date: parseDateForAPI(date)
     };
 
     $.post('/api/todos/', todo, function (data) {
         // reset text input
-        $('#todo-title').val('');
+        $('#todo-string').val('');
 
         // build html from template and append it to todo list
         var template = $('#todo_mustache').html();
@@ -53,4 +75,18 @@ function removeCompleted() {
 
         $('#todo-' + id).remove();
     })
+}
+
+function parseDateForAPI(dateString) {
+    var month = dateString.split('/')[0] - 1;
+    var day = dateString.split('/')[1];
+    var year = dateString.split('/')[2];
+
+    var datetime = new Date();
+
+    datetime.setUTCFullYear(year);
+    datetime.setUTCMonth(month);
+    datetime.setUTCDate(day);
+
+    return datetime.toISOString();
 }
