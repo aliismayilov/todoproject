@@ -18,9 +18,17 @@
 {% block content %}
     <button type="button" class="btn btn-warning pull-right" id="archive-button">Archive completed <i class="icon-trash icon-white"></i></button>
 
-    <ul class="unstyled todos">
-    {% for todo in todos %}
-        {% include 'rest_framework/todo.html' %}
+    {% regroup todos by due_date|date:"m/d/Y" as todo_list %}
+
+    <ul class="todos unstyled inline">
+    {% for due_date in todo_list %}
+        <li><h3>{{ due_date.grouper|default:"No date" }}</h3>
+        <ul class="unstyled">
+            {% for todo in due_date.list %}
+                {% include 'rest_framework/todo.html' %}
+            {% endfor %}
+        </ul>
+        </li>
     {% endfor %}
     </ul>
 

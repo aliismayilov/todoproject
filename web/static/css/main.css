@@ -5,3 +5,9 @@
 #content {
     margin-top: 90px;
 }
+
+.inline > li {
+    vertical-align: top;
+    margin-left: 30px;
+    margin-right: 30px;
+}
