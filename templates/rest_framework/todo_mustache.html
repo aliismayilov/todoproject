@@ -8,4 +8,12 @@
 </li>
 
 </script>
+
+<script id="todo_list_mustache" type="text/html">
+<li><h3>{{ todo.due_date }}</h3>
+    <ul class="unstyled">
+        {{{ todo_entry }}}
+    </ul>
+</li>
+</script>
 {% endverbatim %}

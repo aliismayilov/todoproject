@@ -48,7 +48,7 @@ function addTodo() {
 
     var todo = {
         title: todoString,
-        due_date: parseDateForAPI(date)
+        due_date: ((date == null) ? null : parseDate(date).toISOString())
     };
 
     $.post('/api/todos/', todo, function (data) {
@@ -56,10 +56,55 @@ function addTodo() {
         $('#todo-string').val('');
 
         // build html from template and append it to todo list
-        var template = $('#todo_mustache').html();
-        var html = Mustache.to_html(template, {'todo': data});
+        var todo_template = $('#todo_mustache').html();
+        var todo_html = Mustache.to_html(todo_template, {'todo': data});
 
-        $('.todos').first().append(html);
+        var inserted = false;
+        if (data.due_date != null) {
+            data.due_date = formatDate(new Date(data.due_date));
+
+            $('.todos h3').slice(0, -1).each(function (index) {
+                if (inserted)
+                    return;
+
+                // compare dates without time
+                todo_hours = new Date(data.due_date).setHours(0,0,0,0);
+                this_hours = parseDate($(this).html()).setHours(0,0,0,0);
+
+                if (todo_hours == this_hours) {
+                    $(this).parent().children('ul').append(todo_html);
+                    inserted = true;
+                } else if (todo_hours > this_hours) {
+
+                    var list_template = $('#todo_list_mustache').html();
+                    var list_html = Mustache.to_html(list_template, {
+                        'todo': data,
+                        'todo_entry': todo_html
+                    });
+                    $('.todos').html(list_html);
+
+                    inserted = true;
+                }
+            });
+        } else if ($('.todos h3').last().html() == 'No date' && !inserted) { // append to due date
+            $('.todos ul').last().append(todo_html);
+            inserted = true;
+        }
+
+        if (!inserted) {
+            if (data.due_date == null) {
+                data.due_date = 'No date';
+            } else {
+                data.due_date = formatDate(new Date(data.due_date));
+            }
+
+            var list_template = $('#todo_list_mustache').html();
+            var list_html = Mustache.to_html(list_template, {
+                'todo': data,
+                'todo_entry': todo_html
+            });
+            $('.todos').append(list_html);
+        }
 
         // add event handler for checkbox
         $('#checkbox-' + data.id).click(function () {
@@ -77,7 +122,7 @@ function removeCompleted() {
     })
 }
 
-function parseDateForAPI(dateString) {
+function parseDate(dateString) {
     var month = dateString.split('/')[0] - 1;
     var day = dateString.split('/')[1];
     var year = dateString.split('/')[2];
@@ -88,5 +133,9 @@ function parseDateForAPI(dateString) {
     datetime.setUTCMonth(month);
     datetime.setUTCDate(day);
 
-    return datetime.toISOString();
+    return datetime;
+}
+
+function formatDate(date) {
+    return (date.getUTCMonth() + 1) + '/' + date.getUTCDate() + '/' + date.getUTCFullYear();
 }
