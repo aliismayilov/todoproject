@@ -20,20 +20,7 @@
 
     <ul class="unstyled todos">
     {% for todo in todos %}
-        <li id="todo-{{ todo.id }}" {% if todo.completed %}class="striked"{% endif %}>
-            <form method="post" action="{% url 'todo-completed' todo.id %}">
-                {% csrf_token %}
-                <label class="checkbox">
-                    <input type="checkbox" id="checkbox-{{ todo.id }}" {% if todo.completed %}checked{% endif %}> {{ todo.title }}
-                </label>
-                <input type="hidden" name="next" value="{% url 'web:index' %}">
-                <button class="btn btn-mini btn-success" type="submit" id="completed-button-{{ todo.id }}">completed</button>
-                <script type="text/javascript">
-                    var completedButton = document.getElementById('completed-button-{{ todo.id }}');
-                    completedButton.parentNode.removeChild(completedButton);
-                </script>
-            </form>
-        </li>
+        {% include 'rest_framework/todo.html' %}
     {% endfor %}
     </ul>
 

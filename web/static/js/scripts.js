@@ -30,14 +30,12 @@ function addTodo() {
     };
 
     $.post('/api/todos/', todo, function (data) {
-        console.log(data);
-
         // reset text input
         $('#todo-title').val('');
 
         // build html from template and append it to todo list
-        var template = '<li><label class="checkbox"><input type="checkbox" id="checkbox-{{ id }}"> {{ title }}</label></li>';
-        var html = Mustache.to_html(template, data);
+        var template = $('#todo_mustache').html();
+        var html = Mustache.to_html(template, {'todo': data});
 
         $('.todos').first().append(html);
 

@@ -1,0 +1,11 @@
+{% verbatim %}
+<script id="todo_mustache" type="text/html">
+
+<li id="todo-{{ todo.id }}">
+    <label class="checkbox">
+        <input type="checkbox" id="checkbox-{{ todo.id }}"> {{ todo.title }}
+    </label>
+</li>
+
+</script>
+{% endverbatim %}
