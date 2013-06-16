@@ -119,7 +119,13 @@ function removeCompleted() {
         var id = $(this).attr('id').replace('checkbox-', '');
 
         $('#todo-' + id).remove();
-    })
+    });
+
+    // remove empty lists
+    $('.todos > li').each(function (index) {
+        if ($(this).find('li').length == 0)
+            $(this).remove();
+    });
 }
 
 function parseDate(dateString) {
