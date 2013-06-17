@@ -139,6 +139,9 @@ function addTodo() {
         // change add button text
         $('#add-todo :submit').html($('<i>').addClass('icon-plus')[0].outerHTML + ' add');
 
+        // remove empty message
+        $('.todos h4').parent().remove();
+
         registerTodoLiHover();
     }).fail(function(data) { console.log(data); });
 }
