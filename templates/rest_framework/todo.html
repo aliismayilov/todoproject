@@ -4,11 +4,14 @@
         <label class="checkbox">
             <input type="checkbox" id="checkbox-{{ todo.id }}" {% if todo.completed %}checked{% endif %}> {{ todo.title }}
         </label>
+        <a href="{% url 'web:index' todo.id %}#add-todo" id="edit-{{ todo.id }}">Edit</a>
         <input type="hidden" name="next" value="{% url 'web:index' %}">
         <button class="btn btn-mini btn-success" type="submit" id="completed-button-{{ todo.id }}">completed</button>
         <script type="text/javascript">
             var completedButton = document.getElementById('completed-button-{{ todo.id }}');
             completedButton.parentNode.removeChild(completedButton);
+            var editLink = document.getElementById('edit-{{ todo.id }}');
+            editLink.parentNode.removeChild(editLink);
         </script>
     </form>
 </li>

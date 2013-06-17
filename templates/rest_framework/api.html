@@ -32,12 +32,13 @@
     {% endfor %}
     </ul>
 
-    <form method="post" action="{% url 'web:create' %}" id="add-todo">
+    <form method="post" action="{% url 'web:create_update' %}" id="add-todo">
         {% csrf_token %}
         <fieldset>
             <legend>Add</legend>
             <label>todo</label>
-            <input type="text" placeholder="Type something..." name="title" id="todo-string" required>
+            <input type="hidden" name="todo_id" value="{{ todo_id }}">
+            <input type="text" placeholder="Type something..." name="title" id="todo-string" value="{{ todo_string|default:'' }}" {% if todo_string %}autofocus{% endif %} required>
             <span class="help-block">remember the milk <abbr title="^{% now 'm/d/Y' %}">^optional date</abbr> [add ! for high priority]</span>
             <button type="submit" class="btn">add</button>
         </fieldset>
