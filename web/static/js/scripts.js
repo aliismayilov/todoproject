@@ -27,6 +27,8 @@ $(function() {
             });
         }
     });
+
+    registerTodoLiHover();
 });
 
 function ajaxCompleted(id) {
@@ -34,8 +36,6 @@ function ajaxCompleted(id) {
         $('#todo-' + id).toggleClass('striked muted');
     });
 }
-
-var checkbox;
 
 function addTodo() {
     var todoString = $('#todo-string').val();
@@ -58,7 +58,23 @@ function addTodo() {
         priority: priority
     };
 
-    $.post('/api/todos/', todo, function (data) {
+    var requestType = '';
+    var requestUrl = '';
+
+    var todoId = $('#todo-id').val();
+    if (todoId != '') {
+        requestType = 'PUT';
+        requestUrl = '/api/todos/' + todoId;
+    } else {
+        requestType = 'POST';
+        requestUrl = '/api/todos/';
+    }
+
+    $.ajax({
+        type: requestType,
+        url: requestUrl,
+        data: todo
+    }).done(function (data) {
         // reset text input
         $('#todo-string').val('');
 
@@ -67,7 +83,14 @@ function addTodo() {
         var todo_html = Mustache.to_html(todo_template, {'todo': data});
 
         var inserted = false;
-        if (data.due_date != null) {
+
+        // if editing
+        if (todoId != '') {
+            $('#todo-' + todoId).html(todo_html);
+            inserted = true;
+        }
+
+        if (data.due_date != null && !inserted) {
             data.due_date = formatDate(new Date(data.due_date));
 
             $('.todos h3').slice(0, -1).each(function (index) {
@@ -125,6 +148,11 @@ function addTodo() {
         } else {
             $('#todo-' + data.id).addClass('lit');
         }
+
+        // change add button text
+        $('#add-todo :submit').html($('<i>').addClass('icon-plus')[0].outerHTML + ' add');
+
+        registerTodoLiHover();
     }).fail(function(data) { console.log(data); });
 }
 
@@ -162,4 +190,39 @@ function formatDate(date) {
 
 function endsWith(str, suffix) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+
+function registerTodoLiHover() {
+    $('.todos li li').hover(
+        function () {
+            var $editButton = $('<button>').addClass('btn btn-mini todo-edit-button').append($('<i>').addClass('icon-edit')).append(' edit');
+            
+            $editButton.click(function () {
+                var todoId = $(this).parent().find(':checkbox').attr('id').replace('checkbox-', '');
+                $(this).parent().find('button').remove();
+
+                var todoString = $('#todo-' + todoId).find('label').text().trim();
+
+                var dateString = $('#todo-' + todoId).parent().parent().find('h3').text();
+                if (dateString != 'No date')
+                    todoString += ' ^' + dateString;
+
+                if ($('#todo-' + todoId).hasClass('str'))
+                    todoString += ' !';
+
+                $('#todo-string').val(todoString);
+                $('#todo-id').val(todoId);
+
+                // change add button text
+                $('#add-todo :submit').html($('<i>').addClass('icon-edit')[0].outerHTML + ' edit');
+
+                return false;
+            });
+
+            $(this).find('label').append($editButton);
+        },
+        function () {
+            $(this).find('.todo-edit-button').remove();
+        }
+    );
 }
