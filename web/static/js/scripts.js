@@ -15,19 +15,6 @@ $(function() {
         removeCompleted();
     });
 
-    $('#todo-string').keypress(function(event) {
-        var val = $('#todo-string').val();
-
-        if ( event.which == 94 ) {
-            var datepicker = $('#todo-string').datepicker('show').on('changeDate', function(ev) {
-                var newValue = val + ' ^' + $('#todo-string').val();
-                $('#todo-string').val(newValue);
-
-                datepicker.datepicker('hide');
-            });
-        }
-    });
-
     registerTodoLiHover();
 });
 
@@ -171,17 +158,13 @@ function removeCompleted() {
 }
 
 function parseDate(dateString) {
-    var month = dateString.split('/')[0] - 1;
-    var day = dateString.split('/')[1];
-    var year = dateString.split('/')[2];
+    var now = new Date();
+    var date = Date.parse(dateString);
 
-    var datetime = new Date();
+    date.setHours(now.getHours());
+    date.setMinutes(now.getMinutes());
 
-    datetime.setUTCFullYear(year);
-    datetime.setUTCMonth(month);
-    datetime.setUTCDate(day);
-
-    return datetime;
+    return date;
 }
 
 function formatDate(date) {

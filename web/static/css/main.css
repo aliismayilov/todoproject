@@ -13,6 +13,14 @@
     margin-right: 30px;
 }
 
+.todos li form {
+    margin: 0;
+}
+
+.todos li li {
+    margin-bottom: 24px;
+}
+
 .todo-edit-button {
     display: block;
     position: absolute;

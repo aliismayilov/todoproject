@@ -1,5 +1,5 @@
 <li id="todo-{{ todo.id }}" class="{% if todo.completed %}striked{% endif %} {% if todo.priority == 10 %}str{% else %}lit{% endif %}">
-    <form method="post" action="{% url 'todo-completed' todo.id %}">
+    <form method="post" action="{% url 'todo-completed' todo.id %}" class="inline">
         {% csrf_token %}
         <label class="checkbox">
             <input type="checkbox" id="checkbox-{{ todo.id }}" {% if todo.completed %}checked{% endif %}> {{ todo.title }}
